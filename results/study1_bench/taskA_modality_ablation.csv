@@ -1,0 +1,11 @@
+,mean,mean,std,std
+model,CNN-GRU,XGBoost,CNN-GRU,XGBoost
+modality,,,,
+All 13 channels,0.8399,0.7814,0.005,0.0135
+Cardio (HR+SpO2+ECG),0.4843,0.7007,0.0148,0.0192
+Chest band only,0.8436,0.71,0.0134,0.008
+EEG,0.1785,0.1618,0.0193,0.0053
+EMG (wrist+chest),0.8834,0.7966,0.0286,0.005
+GSR,0.4564,0.3618,0.0188,0.0098
+IMU (accel+gyro),0.7712,0.8069,0.0181,0.0064
+Wrist band only,0.7232,0.8755,0.0151,0.0032

@@ -1,0 +1,13 @@
+,,AUROC_pooled,CI_low,CI_high,diff_vs_bagged,diff_CI_low,diff_CI_high
+day,Load-spike rule (ACWR-type),0.5449,0.5209,0.5722,-0.0848,-0.1284,-0.0393
+day,Logistic regression,0.619,0.5878,0.6493,-0.0115,-0.0467,0.033
+day,Random forest,0.636,0.5986,0.6686,0.0043,-0.0198,0.0363
+day,XGBoost,0.6124,0.5713,0.6495,-0.0183,-0.0311,-0.0051
+day,Bagged XGBoost [Lövdal],0.6309,0.5836,0.6727,0.0,0.0,0.0
+day,GRU,0.6359,0.6029,0.672,0.0054,-0.0323,0.0508
+day,CNN-GRU,0.6311,0.5978,0.6663,0.0009,-0.0386,0.0446
+week,Load-spike rule (ACWR-type),0.5436,0.5216,0.5687,-0.0876,-0.1326,-0.043
+week,Logistic regression,0.6027,0.5606,0.6433,-0.0286,-0.0492,-0.0064
+week,Random forest,0.6201,0.579,0.6607,-0.0108,-0.0297,0.0103
+week,XGBoost,0.6076,0.5676,0.648,-0.0234,-0.0347,-0.0122
+week,Bagged XGBoost [Lövdal],0.6311,0.5915,0.672,0.0,0.0,0.0

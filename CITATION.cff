@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the article below."
+title: "Leakage-aware validation of chest-wrist wearable sensing for sports injury-risk monitoring"
+authors:
+  - family-names: "Julaiha"
+    given-names: "Noorul A. G."
+    orcid: "https://orcid.org/0000-0001-5000-8391"
+  # add co-authors here in the same format
+license: MIT
+version: "1.0.0"
+date-released: "2026-11-24"

@@ -1,0 +1,22 @@
+{
+  "n_samples": 5000,
+  "fs_hz": 100,
+  "duration_s": 50.0,
+  "sessions": 1,
+  "missing": 0,
+  "phase_counts": {
+    "Recovery": 2295,
+    "PeakSprint": 1016,
+    "Warmup": 765,
+    "Acceleration": 476,
+    "Deceleration": 448
+  },
+  "anomaly_samples": 400,
+  "anomaly_runs": 1,
+  "anomaly_start_idx": 1270,
+  "anomaly_end_idx": 1669,
+  "r_wristEMG_chestEMG": 0.9964559704227728,
+  "ranges_match_raw": true,
+  "prior_table_reproduced_maxabs_err": 0.0002854911208272082,
+  "prior_table_n_negative_values": 152
+}

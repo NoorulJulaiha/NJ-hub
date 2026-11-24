@@ -1,0 +1,7 @@
+,AUROC,AUROC,AUROC,false_alarms_per_min,false_alarms_per_min,false_alarms_per_min
+detector,GRU-AE,IsolationForest,Mahalanobis,GRU-AE,IsolationForest,Mahalanobis
+noise,,,,,,
+0.0,0.9915,0.9131,0.9788,6.2084,10.1996,6.6519
+0.25,0.9915,0.9109,0.6989,13.3038,31.929,2.6608
+0.5,0.9913,0.903,0.3858,9.3126,19.9557,2.6608
+1.0,0.9907,0.8876,0.3094,21.7295,24.3902,2.6608

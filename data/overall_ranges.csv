@@ -1,0 +1,3 @@
+,wrist_emg,wrist_hr_bpm,wrist_spo2_pct,chest_ecg,chest_emg,chest_gsr,chest_eeg,chest_accel_x,chest_accel_y,chest_accel_z,chest_gyro_x,chest_gyro_y,chest_gyro_z
+min,-1.53,60.7,95.2,-1.72,-4.74,1.58,-0.835,-0.281,-0.35,9.487,-14.95,-73.55,-81.78
+max,117.38,155.07013422888855,100.0,1.752,118.97,3.94,0.913,0.333,0.268,10.009,101.82,129.96,80.91

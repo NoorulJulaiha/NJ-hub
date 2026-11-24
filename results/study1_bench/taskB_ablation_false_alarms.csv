@@ -1,0 +1,8 @@
+channels,GRU-AE,IsolationForest,Mahalanobis
+All 13 channels,6.208,10.2,6.652
+Chest band only,4.435,18.625,29.268
+IMU only,42.572,20.843,38.581
+Without HR,3.991,10.643,6.652
+"Without HR, EMG",17.295,17.295,18.625
+"Without HR, EMG, GSR",34.59,33.703,11.973
+Wrist band only,7.982,7.095,11.973

@@ -1,0 +1,10 @@
+,mean,mean,mean,std,std,std
+detector,GRU-AE,IsolationForest,Mahalanobis,GRU-AE,IsolationForest,Mahalanobis
+channels,,,,,,
+All 13 channels,0.9915,0.9131,0.9788,0.0006,0.0093,
+Chest band only,0.9928,0.9157,0.9678,0.0005,0.0249,
+IMU only,0.4852,0.5348,0.2686,0.0348,0.0268,
+Without HR,0.9913,0.8224,0.9656,0.0003,0.0207,
+"Without HR, EMG",0.9915,0.9552,0.9605,0.0004,0.0238,
+"Without HR, EMG, GSR",0.4421,0.5902,0.2766,0.0105,0.0661,
+Wrist band only,0.9797,0.8955,0.9599,0.0036,0.0053,
