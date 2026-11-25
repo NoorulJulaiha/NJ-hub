@@ -1,0 +1,29 @@
+task,protocol,modality,model,seed,accuracy,macroF1,balAcc
+3-class,LOSO,Cardiac only (chest HR + wrist HR),XGBoost,0,0.7127,0.6288,0.6238
+3-class,LOSO,Chest + wrist (all),CNN-GRU,0,0.8498,0.7809,0.7752
+3-class,LOSO,Chest + wrist (all),Logistic regression,0,0.8347,0.7752,0.7772
+3-class,LOSO,Chest + wrist (all),Random forest,0,0.8662,0.7802,0.7646
+3-class,LOSO,Chest + wrist (all),XGBoost,0,0.8957,0.8432,0.8299
+3-class,LOSO,Chest only,XGBoost,0,0.8954,0.8388,0.8247
+3-class,LOSO,"Device-matched (ECG-HR, EMG, EDA, chest ACC, wrist HR, wrist ACC)",XGBoost,0,0.8636,0.8037,0.794
+3-class,LOSO,EDA only (chest + wrist),XGBoost,0,0.8092,0.7376,0.7339
+3-class,LOSO,EMG only,XGBoost,0,0.4485,0.3866,0.3895
+3-class,LOSO,Motion only (chest + wrist ACC),XGBoost,0,0.6196,0.5484,0.5429
+3-class,LOSO,Wrist only,XGBoost,0,0.8058,0.7328,0.7273
+3-class,Random split,Chest + wrist (all),CNN-GRU,0,0.992,0.9889,0.9911
+3-class,Random split,Chest + wrist (all),Logistic regression,0,0.9672,0.9572,0.9711
+3-class,Random split,Chest + wrist (all),XGBoost,0,0.9998,0.9999,0.9999
+binary,LOSO,Cardiac only (chest HR + wrist HR),XGBoost,0,0.9026,0.8817,0.8755
+binary,LOSO,Chest + wrist (all),CNN-GRU,0,0.9621,0.955,0.9586
+binary,LOSO,Chest + wrist (all),Logistic regression,0,0.9534,0.9447,0.9479
+binary,LOSO,Chest + wrist (all),Random forest,0,0.964,0.957,0.9562
+binary,LOSO,Chest + wrist (all),XGBoost,0,0.9634,0.9563,0.9566
+binary,LOSO,Chest only,XGBoost,0,0.9394,0.9287,0.9351
+binary,LOSO,"Device-matched (ECG-HR, EMG, EDA, chest ACC, wrist HR, wrist ACC)",XGBoost,0,0.9416,0.9307,0.9343
+binary,LOSO,EDA only (chest + wrist),XGBoost,0,0.936,0.9237,0.9249
+binary,LOSO,EMG only,XGBoost,0,0.5759,0.5006,0.5007
+binary,LOSO,Motion only (chest + wrist ACC),XGBoost,0,0.7442,0.6896,0.6869
+binary,LOSO,Wrist only,XGBoost,0,0.9624,0.9547,0.9507
+binary,Random split,Chest + wrist (all),CNN-GRU,0,1.0,1.0,1.0
+binary,Random split,Chest + wrist (all),Logistic regression,0,0.9974,0.9969,0.9978
+binary,Random split,Chest + wrist (all),XGBoost,0,0.9993,0.9992,0.9995

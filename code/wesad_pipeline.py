@@ -26,6 +26,7 @@ ap.add_argument("--root", required=True); ap.add_argument("--out", default="out_
 ap.add_argument("--seeds", type=int, default=3); ap.add_argument("--win", type=int, default=60); ap.add_argument("--step", type=int, default=5)
 ap.add_argument("--dl_epochs", type=int, default=25)
 ap.add_argument("--abl_seeds", type=int, default=1)
+ap.add_argument("--abl_models", default="XGBoost", help="comma list of models for modality ablation")
 a = ap.parse_args(); DEV = "cuda" if torch.cuda.is_available() else "cpu"; print("device:", DEV); RES, FIG = f"{a.out}/results", f"{a.out}/figures"
 os.makedirs(RES, exist_ok=True); os.makedirs(FIG, exist_ok=True)
 FS_C, FS = 700, 4          # chest native rate; common derived-signal rate (Hz)
@@ -95,10 +96,13 @@ def window_features(sig, rrc, rrw, s, e):
 
 # ---------------------------------------------------------------- build window table
 t0 = time.time()
+CACHE = f"{RES}/_cache_windows.npz"
 pk_files = sorted(glob.glob(os.path.join(a.root, "S*", "S*.pkl")))
 assert pk_files, f"No S*/S*.pkl under {a.root}"
 rows, seqs = [], []
 W, ST = a.win * FS, a.step * FS
+if os.path.exists(CACHE) and os.path.exists(f"{RES}/wesad_window_features.csv"):
+    print("Loading cached windows", flush=True); pk_files = []
 for pf in pk_files:
     sid = os.path.basename(pf)[:-4]
     with open(pf, "rb") as fh: d = pickle.load(fh, encoding="latin1")
@@ -109,10 +113,14 @@ for pf in pk_files:
         f = window_features(sig, rrc, rrw, s, s + W); f.update(subject=sid, label=int(L[0]), start_s=s / FS)
         rows.append(f); seqs.append(np.stack([sig[k][s:s + W] for k in CHANNELS], 1).astype(np.float32))
     print(sid, "windows so far:", len(rows), f"[{time.time()-t0:.0f}s]", flush=True)
-T = pd.DataFrame(rows); SEQ = np.stack(seqs)
-FEATS = [c for c in T.columns if c not in ("subject", "label", "start_s")]
-T[FEATS] = T[FEATS].fillna(T[FEATS].median())
-T.to_csv(f"{RES}/wesad_window_features.csv", index=False)
+if rows:
+    T = pd.DataFrame(rows); SEQ = np.stack(seqs)
+    FEATS = [c for c in T.columns if c not in ("subject", "label", "start_s")]
+    T[FEATS] = T[FEATS].fillna(T[FEATS].median())
+    T.to_csv(f"{RES}/wesad_window_features.csv", index=False); np.savez_compressed(CACHE, SEQ=SEQ)
+else:
+    T = pd.read_csv(f"{RES}/wesad_window_features.csv"); SEQ = np.load(CACHE)["SEQ"]
+    FEATS = [c for c in T.columns if c not in ("subject", "label", "start_s")]
 # per-subject z-score (label-free, standard in WESAD work)
 Z = T.copy(); Z[FEATS] = T.groupby("subject")[FEATS].transform(lambda x: (x - x.mean()) / (x.std() + 1e-9))
 SEQZ = SEQ.copy()
@@ -166,12 +174,19 @@ def cols_for(chs):
     pref = tuple(chs) + tuple({c.split("_")[0] + "_HRV" for c in chs if c.endswith("_HR")}) + (("C_RESP_rate",) if "C_RESP" in chs else ()) + (("C_EMG_RMS_p90",) if "C_EMG_RMS" in chs else ())
     return [f for f in FEATS if f.startswith(pref)]
 
+RUNS = f"{RES}/wesad_all_runs.csv"
+DONE_KEYS = set()
+if os.path.exists(RUNS):
+    _p = pd.read_csv(RUNS); DONE_KEYS = set(zip(_p.task, _p.protocol, _p.modality, _p.model, _p.seed)); print("Resuming:", len(DONE_KEYS), "runs already done", flush=True)
+def save_row(r):
+    pd.DataFrame([r]).to_csv(RUNS, mode="a", header=not os.path.exists(RUNS), index=False)
 def run(task, protocol, models, modset, seeds):
     y = T.label.values - 1 if task == "3-class" else (T.label.values == 2).astype(int)
     ncls = 3 if task == "3-class" else 2; chs = MODSETS[modset]; ci = [CHANNELS.index(c) for c in chs]; fc = cols_for(chs)
     subj = T.subject.values; out = []
     for m in models:
         for sd in seeds:
+            if (task, protocol, modset, m, sd) in DONE_KEYS: continue
             if protocol == "LOSO": splits = [(np.where(subj != s)[0], np.where(subj == s)[0]) for s in np.unique(subj)]
             else: splits = list(StratifiedKFold(5, shuffle=True, random_state=sd).split(T, y))
             pred = np.zeros(len(y), int); persub = []
@@ -182,7 +197,7 @@ def run(task, protocol, models, modset, seeds):
                             macroF1=f1_score(y, pred, average="macro"), balAcc=balanced_accuracy_score(y, pred)))
             if protocol == "LOSO" and modset == "Chest + wrist (all)" and sd == 0:
                 pd.DataFrame(persub).to_csv(f"{RES}/persubject_{task}_{m.replace(' ', '_')}.csv", index=False)
-            print(task, protocol, modset[:22], m, sd, round(out[-1]["macroF1"], 3), f"[{time.time()-t0:.0f}s]", flush=True)
+            save_row(out[-1]); print(task, protocol, modset[:22], m, sd, round(out[-1]["macroF1"], 3), f"[{time.time()-t0:.0f}s]", flush=True)
     return out
 
 seeds = list(range(a.seeds)); MODELS = ["Logistic regression", "Random forest", "XGBoost", "CNN-GRU"]; res = []
@@ -190,8 +205,8 @@ for task in ["3-class", "binary"]:
     res += run(task, "LOSO", MODELS, "Chest + wrist (all)", seeds)
     res += run(task, "Random split", ["Logistic regression", "XGBoost", "CNN-GRU"], "Chest + wrist (all)", seeds)
     for ms in list(MODSETS)[1:]:
-        res += run(task, "LOSO", ["XGBoost", "CNN-GRU"], ms, list(range(a.abl_seeds)))
-R = pd.DataFrame(res); R.to_csv(f"{RES}/wesad_all_runs.csv", index=False)
+        res += run(task, "LOSO", a.abl_models.split(","), ms, list(range(a.abl_seeds)))
+R = pd.read_csv(RUNS)
 S = R.groupby(["task", "protocol", "modality", "model"])[["accuracy", "macroF1", "balAcc"]].agg(["mean", "std"]).round(4)
 S.to_csv(f"{RES}/wesad_summary.csv"); print(S.to_string())
 

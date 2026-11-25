@@ -1,0 +1,7 @@
+modality,macroF1_CNNGRU_3class
+Chest only,0.781
+Wrist only,0.683
+"Device-matched (ECG-HR, EMG, EDA, chest ACC, wrist HR, wrist ACC)",0.76
+Cardiac only (chest HR + wrist HR),0.618
+EDA only (chest + wrist),0.658
+EMG only,0.526
