@@ -1,8 +1,8 @@
-# Leakage-aware validation of chest–wrist wearable sensing for sports injury-risk monitoring
+# Subject-Independent Evaluation of Multimodal Wearable Sensing and Deep Learning for Sports Injury-Risk Prediction
 
 Code, results and figures for the article:
 
-> [Authors]. *Leakage-Aware Validation of Chest–Wrist Wearable Sensing for Sports Injury-Risk Monitoring: Evidence from Bench, Laboratory and Seven-Year Athlete Data.* [Journal], 2026. [DOI after acceptance]
+> [Authors]. *Subject-Independent Evaluation of Multimodal Wearable Sensing and Deep Learning for Sports Injury-Risk Prediction.* [Journal], 2026. [DOI after acceptance]
 
 ## What is in this repository
 
